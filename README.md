@@ -1,7 +1,8 @@
 #  rgb-hdmi-aoc-amdgpu
 
 A crappy script to set custom EDID without YCbCr support to force RGB output on HDMI when using Radeon GPUs.
-Thanks to: https://www.wezm.net/v2/posts/2020/linux-amdgpu-pixel-format/ and https://gist.github.com/RLovelett/171c374be1ad4f14eb22fe4e271b7eeb
+Thanks to: 
+https://www.wezm.net/v2/posts/2020/linux-amdgpu-pixel-format/ <br/> https://gist.github.com/RLovelett/171c374be1ad4f14eb22fe4e271b7eeb
 
 #### Warning
 I wrote this for personal use, oriented to Arch Linux + GRUB with a patched EDID from my AOC 22" monitor that may not be suitable for your use case. Please refer to the links above if you're looking for the custom EDID creation steps.
@@ -20,7 +21,7 @@ However, for Linux users who don't want to mess with proprietary drivers like if
 I decided to take the second approach because the kernel is frequently updated in Arch Linux and I don't feel Gentoo-user enough to recompile it patched on every update.
 
 ## How to use
-Simply clone the repo and run `rgb.sh` as root.
-`# git clone https://github.com/ncr6/rgb-hdmi-aoc-amdgpu`
-`# cd rgb-hdmi-aoc-amdgpu`
-`# ./rgb.sh`
+Simply clone the repo and run `rgb.sh` as root. <br/>
+`# git clone https://github.com/ncr6/rgb-hdmi-aoc-amdgpu` <br/>
+`# cd rgb-hdmi-aoc-amdgpu` <br/>
+`# ./rgb.sh` <br/>
