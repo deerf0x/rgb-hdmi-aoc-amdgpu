@@ -9,14 +9,33 @@ do_edid_stuff(){
 	cp ./edid_hdmi.bin /usr/lib/firmware/edid
 
 	echo "Appending custom EDID to cmdline..."
-	# Arch Wiki says "drm_kms_helper" should be used with older kernels, but just using "drm.edid_firmware" didn't work lol, (5.15.6-xanmod-tt)
-	sed -i 's+GRUB_CMDLINE_LINUX_DEFAULT="[^"]*+& amdgpu.dc=1 drm_kms_helper.edid_firmware=HDMI-A-1:edid/edid_hdmi.bin+' /etc/default/grub
+
+	sed -i 's+GRUB_CMDLINE_LINUX_DEFAULT="[^"]*+& amdgpu.dc=1 drm.edid_firmware=HDMI-A-1:edid/edid_hdmi.bin+' /etc/default/grub
 
 	echo "Regenerating GRUB config..."
 	grub-mkconfig -o /boot/grub/grub.cfg
 
 	echo "Regenerating initramfs..."
-	mkinitcpio -P
+	
+	if [[ "$(command -v update-initramfs)" ]]; then
+    		echo "update-initramfs detected."
+    		echo "Creating backup of initramfs-tools hook functions file..."
+    		cp /usr/share/initramfs-tools/hook-functions /usr/share/initramfs-tools/hook-functions.bak
+    		echo "Appending EDID copy hook..."
+    		sed -i 's/.*local prefix kmod options firmware.*/&\n\tcopy_exec \/lib\/firmware\/edid\/edid_hdmi.bin/' /usr/share/initramfs-tools/hook-functions
+    		echo "Running update-initramfs -u"
+    		update-initramfs -u
+	fi
+	
+	if [[ "$(command -v dracut)" ]]; then
+    		echo "dracut detected."
+    		dracut --regenerate-all
+	fi
+	
+	if [[ "$(command -v mkinitcpio)" ]]; then
+    		echo "mkinitcpio detected."
+    		mkinitcpio -P
+	fi
 
 	echo "Done. Please reboot to make changes effective."
 }
